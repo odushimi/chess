@@ -16,18 +16,24 @@ class GameStatus(Enum):
 
 # FILES: A - H
 COLUMNS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
-# Assuming: A=1, B=2, C=3, D=4, etc
-EVEN_COLUMNS = [col for col in COLUMNS if COLUMNS.index(col) % 2 == 1]  # ['B', 'D', 'F', 'H']
-ODD_COLUMNS = [col for col in COLUMNS if COLUMNS.index(col) % 2 == 0]  # ['A', 'C', 'E', 'G']
+
 
 # RANKS: 1 - 8
 ROWS = [1, 2, 3, 4, 5, 6, 7, 8]
-EVEN_ROWS = [row for row in ROWS if row % 2 == 0]  # [2, 4, 6, 8]
-ODD_ROWS = [row for row in ROWS if row % 2 == 1]  # [1, 3, 5, 7]
+
 
 
 class Square:
     """ One box that represents a single square on the board """
+
+
+    # Assuming: A=1, B=2, C=3, D=4, etc
+    EVEN_COLUMNS = [col for col in COLUMNS if COLUMNS.index(col) % 2 == 1]  # ['B', 'D', 'F', 'H']
+    ODD_COLUMNS = [col for col in COLUMNS if COLUMNS.index(col) % 2 == 0]  # ['A', 'C', 'E', 'G']
+
+    EVEN_ROWS = [row for row in ROWS if row % 2 == 0]  # [2, 4, 6, 8]
+    ODD_ROWS = [row for row in ROWS if row % 2 == 1]  # [1, 3, 5, 7]
+    
 
     def __init__(self, col, row):
 
@@ -53,19 +59,19 @@ class Square:
     @staticmethod
     def _initialize_color(col, row):
         # odd - odd : dark
-        if col in ODD_COLUMNS and row in ODD_ROWS:
+        if col in Square.ODD_COLUMNS and row in Square.ODD_ROWS:
             return Color.BLACK
 
         # odd - even : light
-        elif col in ODD_COLUMNS and row in EVEN_ROWS:
+        elif col in Square.ODD_COLUMNS and row in Square.EVEN_ROWS:
             return Color.WHITE
 
         # even - even : dark
-        elif col in EVEN_COLUMNS and row in EVEN_ROWS:
+        elif col in Square.EVEN_COLUMNS and row in Square.EVEN_ROWS:
             return Color.BLACK
 
         # even - odd : light
-        elif col in EVEN_COLUMNS and row in ODD_ROWS:
+        elif col in Square.EVEN_COLUMNS and row in Square.ODD_ROWS:
             return Color.WHITE
 
         else:
@@ -295,7 +301,7 @@ class Queen(Piece):
 
     def _queen_can_move(self, start: Square, end: Square) -> bool:
         # Queen can move any number of vacant squares diagonally, horizontally, or vertically.
-        return False
+        return True
 
 
 class Bishop(Piece):
@@ -307,7 +313,7 @@ class Bishop(Piece):
 
     def _bishop_can_move(self, start: Square, end: Square) -> bool:
         # Bishop can move any number of vacant squares in any diagonal direction.
-        return False
+        return True
 
 
 class Knight(Piece):
