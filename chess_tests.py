@@ -1,5 +1,5 @@
 import unittest
-from src.main import chess
+import chess
 import random
 import string
 
@@ -284,4 +284,5 @@ class TestMove(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    # To run: python -m unittest chess_tests
     unittest.main()

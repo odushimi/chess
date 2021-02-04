@@ -1,5 +1,5 @@
 from enum import Enum
-from src.main.tools import color_fg_reset, color_fg, color_bg_reset
+from tools import color_fg_reset, color_fg, color_bg_reset
 from abc import ABC, abstractmethod
 
 
@@ -74,9 +74,9 @@ class Square:
     def __str__(self):
         bg = None
         if self.color == Color.WHITE:
-            bg = 'white'
+            bg = 'orange'
         elif self.color == Color.BLACK:
-            bg = 'black'
+            bg = 'purple'
         return color_bg_reset('{}{}[{}]'.format(self.col, self.row, self.piece if self.piece else '  '), bg)
 
     def __repr__(self):
@@ -134,7 +134,7 @@ class Piece(ABC):
             raise Exception('Illegal move: piece is not on the board')
 
     def __str__(self):
-        return color_fg('{}{}'.format(self.short, self.color.value), 'red' if not self.alive else 'green')
+        return color_fg('{}{}'.format(self.short, self.color.value), 'black' if not self.color == Color.WHITE else 'red')
 
     def __repr__(self):
         return self.__str__()
@@ -421,7 +421,7 @@ class Rook(Piece):
 
 
 class Board:
-    """ Single board: 64 squares, 32 blacks and 32 whites"""
+    """ Single board: 64 squares, 32 dark color and 32 light color"""
 
     def __init__(self):
         self._squares = self.initialize()
@@ -484,7 +484,7 @@ class Board:
 
 
 class Player:
-    """ Each individual player will have own board. """
+    """ Individual player: white or black """
 
     def __init__(self, color, name=None, board_instance=None, ):
         self._name = name
@@ -568,6 +568,13 @@ class Move:
         self.player = player
         self.piece = piece
         self._captured = None
+
+        if not self.player:
+            raise Exception('There is no player making a move')
+
+        if not self.piece:
+            raise Exception('There is no piece to move for player: {}'.format(self.player))
+
 
         if isinstance(start, Square):
             self.start = start
@@ -706,6 +713,7 @@ class Game:
 
 
 if __name__ == "__main__":
+    # To run: python chess.py
 
     new_game = Game()
     while not new_game.over:
